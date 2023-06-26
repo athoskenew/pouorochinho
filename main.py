@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import os
+os.environ["KIVY_NO_CONSOLELOG"] = "1"
+os.environ['PYTHONWARNINGS'] = 'ignore:.*'
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -15,7 +18,565 @@ from functools import partial
 from random import randint
 from kivy.uix.screenmanager import ScreenManager
 from kivy.core.audio import SoundLoader
+from kivy.lang import Builder
+from kivy.core.window import Window
+import sys
+from kivy.resources import resource_add_path, resource_find
+from kivy.config import Config
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
+kv = """
+# -*- coding: utf-8 -*-
+#:import Hexad kivy.utils.get_color_from_hex
+
+<ImageButton>:
+
+<ItemImage>:
+    size_hint: None, None
+    size: dp(50), dp(50)
+
+<GameMenu>:
+    home: home
+    moneygained: moneygained
+    canvas.before:
+        Color:
+            rgba: 1, 0.7608, 0.7725, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    size_hint_y: None
+    height: dp(50)
+    padding: dp(5)
+    FloatLayout:
+        size_hint_x: None
+        width: dp(50)
+        ContextButton:
+            id: home
+            width: dp(40)
+            source: 'source/images/home.png'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    Widget:
+    Widget:
+    Widget:
+    FloatLayout:
+        id: moneygainedfl
+        size_hint_x: None
+        width: dp(50)
+        ContextButton:
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            size_hint_x: None
+            width: dp(50)
+            source: 'source/images/moeda.png'
+        Texts:
+            id: moneygained
+            pos_hint: {'center_x': 0.43, 'center_y': 0.5}
+            color: 1, 1, 1, 1
+            outline_color: 0, 0, 0, 1
+            text: '0'
+
+<Projetil>:
+    size_hint: None, None
+    size: dp(20), dp(40)
+    source: 'source/images/projetil.png'
+
+<GozaPeida>:
+    orientation: 'vertical'
+    pougame: pougame
+    poufemea: poufemea
+    gamefl: gamefl
+    menu: menu
+    canvas:
+        Color:
+            rgba: Hexad("#C1CFDA")
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: 'source/images/floresta.png'
+    GameMenu:
+        id: menu
+    FloatLayout:
+        id: gamefl
+        Image:
+            id: poufemea
+            size_hint: None, None
+            size: dp(50), dp(50)
+            x: root.x + root.width/2 - dp(25)
+            y: root.y + root.height - dp(150)
+            source: 'source/images/poufemea.png'
+        Image:
+            id: pougame
+            size_hint: None, None
+            size: dp(50), dp(50)
+            x: root.x + root.width/2 - dp(25)
+            y: root.y + 10
+            source: 'source/images/poufeliz.png'
+
+<Clt>:
+    color: 1,1,1,1
+    canvas:
+        Color:
+            rgba: self.color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: 'source/images/clt.png'
+    size_hint: None, None
+    size: dp(30), dp(40)
+
+<CltRun>:
+    orientation: 'vertical'
+    menu: menu
+    gamefl: gamefl
+    pougame: pougame
+
+    canvas:
+        Color:
+            rgba: Hexad("#C1CFDA")
+        Rectangle:
+            size: self.size
+            pos: self.pos
+            source: 'source/images/city.jpg'
+    GameMenu:
+        id: menu
+    FloatLayout:
+        id: gamefl
+        Image:
+            id: pougame
+            size_hint: None, None
+            size: dp(50), dp(50)
+            x: root.x + root.width/2 - dp(25)
+            y: root.y + 10
+            source: 'source/images/poufeliz.png'
+
+<GameSelect>:
+    size_hint: 0.5, 0.3
+    title: 'Selecione um jogo'
+    title_align: 'center'
+    title_color: 'black'
+    title_font: 'source/font/ComicSans'
+    title_size: dp(20)
+    separator_height: 0
+    background_color: 1, 1, 1, 0.8
+    background: ''
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(20)
+        Button:
+            font_size: 18
+            size_hint: None, None
+            size: 200, 50
+            pos_hint: {'center_x': 0.5}
+            background_normal: ''
+            background_color: 0.8, 0.2, 0.2, 1
+            # background_down: ''
+            text: 'Goza e peida'
+            on_release: root.game1()
+        Button:
+            font_size: 18
+            size_hint: None, None
+            size: 200, 50
+            pos_hint: {'center_x': 0.5}
+            background_normal: ''
+            background_color: 0.8, 0.2, 0.2, 1
+            # background_down: ''
+            text: 'CLT Run'
+            on_release: root.game2()
+
+<Pix>:
+    size_hint: 0.7, 0.7
+    title: 'ME MANDE SEU DINHEIRO'
+    title_align: 'center'
+    title_color: 'black'
+    title_font: 'source/font/ComicSans'
+    title_size: dp(20)
+    separator_height: 0
+    background_color: 1, 1, 1, 0.8
+    background: ''
+    Image:
+        source: 'source/images/livepix.png'
+
+<Pou>:
+    size_hint: None, None
+    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    size: dp(100), dp(100)
+    boca: boca
+    cabelo: 'cabelo.png'
+    hair_style: hair
+    pou: pou
+    source: 'source/images/pourochi.png'
+    offsetcx: 0
+    offsetcy: 0
+    offsetcw: 0
+    offsetch: 0
+    eye_offset_x: 0
+    eye_offset_y: 0
+    Widget:
+        id: pou
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                source: root.source
+                size: root.size[0], root.size[1] - 4
+                pos: root.pos
+    Widget:
+        canvas:
+            Color:
+                rgba: 1,1,1,1
+            Rectangle:
+                source: 'source/images/' + root.cabelo
+                pos: root.x + dp(9) + root.offsetcx, root.y + dp(55) + root.offsetcy
+                size: dp(85) + root.offsetcw, dp(43) + root.offsetch
+        id: hair
+        size_hint: None, None
+        #width: dp(85) + root.offsetcw
+        #height: dp(100) + root.offsetch
+        #pos: root.x + dp(9) + root.offsetcx, root.y + dp(28) + root.offsetcy
+
+
+    Widget:
+        canvas:
+            Color:
+                rgba: 0, 0, 0, 1
+            Ellipse:
+                size: dp(8), dp(8)
+                pos: root.x + dp(36) + dp(root.eye_offset_x), root.y + dp(63) + dp(root.eye_offset_y)
+    Widget:
+        canvas:
+            Color:
+                rgba: 0, 0, 0, 1
+            Ellipse:
+                size: dp(8), dp(8)
+                pos: root.x + dp(52) + dp(root.eye_offset_x), root.y + dp(63) + dp(root.eye_offset_y)
+    Widget:
+        id: boca
+        top_offset: 20
+        down_offset: 20
+        canvas:
+            Color:
+                rgba: 1,0,0,1
+            Color:
+                rgba: 0, 0, 0, 1
+            Line:
+                width: 2
+                bezier: [root.x + dp(33), root.y + dp(30), root.x + dp(47), root.y + dp(self.top_offset), root.x + dp(62), root.y + dp(30)]
+            Line:
+                bezier: [root.x + dp(33), root.y + dp(30), root.x + dp(47), root.y + dp(self.down_offset), root.x + dp(62), root.y + dp(30)]
+                width: 2
+<Texts>:
+    size_hint_y: 0.3
+    text: 'Comidinha'
+    color: 0, 0, 0, 1
+    outline_color: 1, 1, 1, 1
+    outline_width: 2
+    font_name: 'source/font/ComicSans'
+    bold: True
+
+<StackItem>:
+    orientation: 'vertical'
+    size_hint: None, None
+    height: dp(150)
+    source: ''
+    item: ''
+    Image:
+        source: root.source
+    Texts:
+        text: root.item
+        size: self.texture_size
+        text_size: root.width - dp(5), None
+        halign: 'center'
+
+<ShopItem>:
+    size_hint: 1, None
+    height: dp(100)
+    img: ''
+    name: ''
+    description: ''
+    price: ''
+    buy: buy
+    BoxLayout:
+        Image:
+            source: root.img
+        BoxLayout:
+            id: iteminfo
+            padding: dp(5)
+            orientation: 'vertical'
+            Texts:
+                text: root.name
+                color: 1, 1, 1, 1
+                outline_color: 0, 0, 0, 1
+                outline_width: 2
+                text_size: iteminfo.width - dp(5), None
+                size: self.texture_size
+            Texts:
+                text: root.description
+                font_size: dp(12)
+                text_size: iteminfo.width - dp(5), None
+                outline_width: 0
+                size: self.texture_size
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                Image:
+                    size_hint: 0.3, 1
+                    source: 'source/images/moeda.png'
+                Texts:
+                    size_hint_y: 1
+                    text: root.price
+            Image:
+                id: buy
+                source: 'source/images/buy.png'
+
+<Fridge>:
+    itens: itens
+    size_hint: 0.9, 0.95
+    title: 'Geladeira'
+    title_align: 'center'
+    title_color: 'black'
+    title_font: 'source/font/ComicSans'
+    title_size: dp(20)
+    separator_height: 0
+    background_color: 1, 1, 1, 0.8
+    background: ''
+    StackLayout:
+        id: itens
+        spacing: dp(15), 0
+
+<Shop>:
+    size_hint: 0.8, 0.9
+    title: 'Shop'
+    title_align: 'center'
+    title_color: 'black'
+    title_font: 'source/font/ComicSans'
+    title_size: dp(20)
+    separator_height: 0
+    background_color: 1, 1, 1, 0.8
+    background: ''
+    box: b1
+    ScrollView:
+        always_overscroll: False
+        effect_cls: 'ScrollEffect'
+        BoxLayout:
+            id: b1
+            height: self.minimum_height
+            size_hint_y: None
+            orientation: 'vertical'
+            spacing: dp(15)
+
+
+<PouScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 0.49, 0.48, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<ContextButton@Widget>:
+    source: ''
+    size_hint_x: None
+    width: dp(50)
+    color: 1, 1, 1, 1
+    canvas:
+        Color:
+            rgba: self.color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: self.source
+
+<TopMenu>:
+    money: money
+    level: level
+    moneybt: moneybt
+    levelbt: levelbt
+    canvas.before:
+        Color:
+            rgba: 1, 0.7608, 0.7725, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    size_hint_y: None
+    height: dp(50)
+    padding: dp(5)
+    FloatLayout:
+        id: flmoeda
+        size_hint_x: None
+        width: dp(50)
+        ContextButton:
+            id: moneybt
+            source: 'source/images/moeda.png'
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        Texts:
+            id: money
+            pos: flmoeda.x + dp(13), flmoeda.y
+            color: 1, 1, 1, 1
+            outline_color: 0, 0, 0, 1
+            text: '100'
+    Widget:
+    BoxLayout:
+        size_hint_x: None
+        width: dp(200)
+        spacing: dp(5)
+        ContextButton:
+            source: 'source/images/coxinha.png'
+        ContextButton:
+            source: 'source/images/cura.png'
+        ContextButton:
+            source: 'source/images/poudoido.png'
+        ContextButton:
+            source: 'source/images/raio.png'
+    Widget:
+    FloatLayout:
+        id: fllevel
+        size_hint_x: None
+        width: dp(50)
+        ContextButton:
+            id: levelbt
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            size_hint_x: None
+            width: dp(50)
+            source: 'source/images/level.png'
+        Texts:
+            id: level
+            pos: fllevel.x, fllevel.y + dp(10)
+            color: 1, 1, 1, 1
+            outline_color: 0, 0, 0, 1
+            text: '1'
+
+
+<BottomMenu>:
+    canvas.before:
+        Color:
+            rgba: 0.5804, 0.2824, 0.2588, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    size_hint_y: None
+    height: dp(50)
+    padding: dp(5)
+    i_img: item_img
+    i_text: item_text
+    left_arrow: left
+    right_arrow: right
+    fridge: fridge_button
+    shop: shop_button
+    FloatLayout:
+        id: fridge
+        size_hint_x: None
+        width: dp(70)
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(100)
+            pos: fridge.pos
+            ContextButton:
+                id: fridge_button
+                size_hint: None, 0.8
+                width: fridge.width
+                source: 'source/images/fridge.png'
+            Texts:
+                size_hint_y: 0.2
+                text: 'Geladeira'
+    Widget:
+    FloatLayout:
+        id: item
+        size_hint_x: None
+        width: dp(200)
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: None
+            size_hint_y: None
+            height: dp(80)
+            width: dp(200)
+            x: item.x
+            y: item.y
+            BoxLayout:
+                size_hint_y: 0.7
+                Widget:
+                    id: left
+                    canvas:
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                            source: 'source/images/left.png'
+                Widget:
+                    id: item_img
+                    source: 'cherry.png'
+                    woffset: 0
+                    canvas:
+                        Rectangle:
+                            size: item_img.width + item_img.woffset, item_img.height
+                            pos: self.pos[0] + (-1)*self.woffset/2, self.pos[1]
+                            source: 'source/images/' + self.source
+                Widget:
+                    id: right
+                    canvas:
+                        Color:
+                            rgba: 1, 1, 1, 1
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                            source: 'source/images/right.png'
+            Texts:
+                id: item_text
+                text: 'Cherries'
+    Widget:
+    FloatLayout:
+        id: shop
+        size_hint_x: None
+        width: dp(70)
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(100)
+            pos: shop.pos
+            ContextButton:
+                id: shop_button
+                size_hint: None, 0.8
+                width: shop.width
+                source: 'source/images/shop.png'
+            Texts:
+                size_hint_y: 0.2
+                text: 'Shop'
+
+
+<MainScreen>:
+    pouscreen: pou_screen
+    curado_txt: curado_txt
+    orientation: 'vertical'
+    TopMenu:
+        id: top
+    PouScreen:
+        id: pou_screen
+        Texts:
+            id: curado_txt
+            opacity: 0
+            text: 'Curado da Calvice!'
+            pos_hint: {'top': 0.8, 'center_x': 0.5}
+        Pou:
+    BottomMenu:
+        id: bottom
+        pou_screen: pou_screen
+
+
+<Manager>:
+    Screen:
+        name: 'home'
+        MainScreen:
+    Screen:
+        name: 'game1'
+        GozaPeida:
+
+    Screen:
+        name: 'game2'
+        CltRun:
+"""
+
+Builder.load_string(kv)
 
 class Manager(ScreenManager):
     def __init__(self, **kwargs):
@@ -88,7 +649,8 @@ class Projetil(Image):
                 self.topmenu.money.text = str(int(self.topmenu.money.text) + 50)
                 self.game.menu.moneygained.text = str(int(self.game.menu.moneygained.text) + 50)
                 self.gatilho()
-                self.game.peido_sound.play()
+                if self.game.peido_sound is not None:
+                    self.game.peido_sound.play()
                 if self.game.tiros > 0:
                     self.game.tiros -= 1
                 self.game.gamefl.remove_widget(self)
@@ -382,7 +944,8 @@ class ShopItem(BoxLayout):
                     Clock.schedule_once(partial(self.removeinfo, info), 1)
                     return True
                 self.dinheiro_sound = SoundLoader.load('source/audios/sfx/dinheiro.mp3')
-                self.dinheiro_sound.play()
+                if self.dinheiro_sound is not None:
+                    self.dinheiro_sound.play()
                 geladeira.in_fridge.append(self.name)
                 geladeira.itens.add_widget(StackItem(source=self.img, item=self.name))
                 dinheiro.text = str(int(dinheiro.text) - int(self.price))
@@ -546,7 +1109,8 @@ class BottomMenu(BoxLayout):
                     self.app.pou.boca.down_offset -= 0.4
                     if not self.hmm:
                         self.hmm = True
-                        self.hmm_sound.play()
+                        if self.hmm_sound is not None:
+                            self.hmm_sound.play()
             else:
                 if self.app.pou.boca.top_offset >= 20:
                     self.app.pou.boca.top_offset -= 2
@@ -684,9 +1248,12 @@ class Pourochi(App):
     game2 = None
 
     def build(self):
+        self.icon = 'icon.ico'
         pou = Manager()
         return pou
 
 
 if __name__ == '__main__':
+    if hasattr(sys, '_MEIPASS'):
+        resource_add_path(os.path.join(sys._MEIPASS))
     Pourochi().run()
