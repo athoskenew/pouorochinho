@@ -15,7 +15,7 @@ from functools import partial
 from random import randint
 from kivy.uix.screenmanager import ScreenManager
 from kivy.core.audio import SoundLoader
-
+import webbrowser
 
 class Manager(ScreenManager):
     def __init__(self, **kwargs):
@@ -280,7 +280,11 @@ class Pix(Popup):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.app = App.get_running_app()
-
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            webbrowser.open('https://livepix.gg/kenew')
+            return
+        self.dismiss()
 
 class TopMenu(BoxLayout):
     def __init__(self, **kwargs):
