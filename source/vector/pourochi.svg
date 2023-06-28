@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="43.84"
+   height="38.720001"
+   viewBox="0 0 43.84 38.720001"
+   sodipodi:docname="pourochi.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="7.8657059"
+     inkscape:cx="1.9705797"
+     inkscape:cy="23.392688"
+     inkscape:window-width="1920"
+     inkscape:window-height="988"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g8" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g8">
+    <path
+       style="fill:#c5995a;fill-opacity:1;stroke:#000000;stroke-opacity:1;opacity:1"
+       d="M 21.626918,0.7295828 C 26.726355,0.17731438 42.037497,13.179886 43.201724,28.505842 43.948678,41.794672 -0.48871069,41.421238 0.8859219,27.411468 3.0266438,11.042859 16.658807,0.12159729 21.626918,0.7295828 Z"
+       id="path179"
+       sodipodi:nodetypes="cccc" />
+    <ellipse
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="path1060-3"
+       cx="24.701588"
+       cy="11.829664"
+       rx="3.5958009"
+       ry="4.1951013" />
+    <ellipse
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="path1060-3-6"
+       cx="17.145195"
+       cy="11.777551"
+       rx="3.5958009"
+       ry="4.1951013" />
+  </g>
+</svg>
