@@ -10,10 +10,10 @@ Você pode baixar e utilizar o App gratuitamente sem necessidade de instalação
 Você pode:
 
 
-- Alimentar seu pou com algumas comidas pré-definidas: Cherry, Banana podre e pica.
+- Alimentar seu pou com algumas comidas pré-definidas: Cherry, Banana podre.
 - Curar o Pou da calvície, durante o jogo seu Pouorochinho ficará calvo de 2 a 3 vezes.
-- Comprar potions mágicos que alteram algo ao serem consumidos. clicando em "Shop" você acessa a loja onde compra os potions. Existem 5 potions, como o Potion da Calvície que cura a sua calvície, Potion da Pica, que deixa seu Pou em formato pica, Potion da mitada, que faz seu Pou falar uma das 35 mitadas disponíveis, Potion da surpresa, que lhe dá de -100 a 200 moedas e o Potion da preguiça, que até o momento não faz nada.
-- Jogar mini-jogos, como o GozaPeida e o CLT Run, todos os jogos dão moedas para você comprar itens no Shop.
+- Comprar potions mágicos que alteram algo ao serem consumidos. clicando em "Shop" você acessa a loja onde compra os potions. Existem 5 potions, como o Potion da Calvície que cura a sua calvície, Potion da mitada, que faz seu Pou falar uma das 35 mitadas disponíveis, Potion da surpresa, que lhe dá de -100 a 200 moedas e o Potion da preguiça, que até o momento não faz nada.
+- Jogar mini-jogos como o CLT Run, todos os jogos dão moedas para você comprar itens no Shop.
 
 **__Shop:__** <br>
 Contém itens que podem ser comprados para incrementar o seu Pou, no momento, apenas poções estão disponíveis.
@@ -22,12 +22,7 @@ Contém itens que podem ser comprados para incrementar o seu Pou, no momento, ap
 Todos os itens comprados vão para a geladeira, ao clicar em um item na geladeira, ele desaparecerá de lá e irá para o final da lista de consumíveis, podendo ser encontrado clicando nas setas para esquerda e direita no centro inferior da tela.
 
 **__Jogos e dinheiro:__** <br>
-O Pouorochinho conta com 2 mini-jogos embutidos, o primeiro chama-se GozaPeida e o segundo CLT Run. Ambos os jogos podem ser encontrados ao clicar na moeda brilhante no canto superior esquerdo da tela, um menu com os dois jogos aparecerá para que o usuário decida qual deseja jogar. <br>
-
-**__GozaPeida:__** Acerte a Pou na parte superior da tela para ganhar moedas, ela também irá atacar, então tente desviar de seus ataques. <br>
-**__CLT Run:__** Desvie das propostas de emprego e carteiras de trabalho que tentam te acertar, clicar na tela lhe fará 'subir', caindo automáticamente depois de clicar, use isso para correr das CLT. <br>
-<br>
-Independente de qual jogo seja, acertar um alvo ou desviar de uma CLT lhe dará +50 moedas, ser atingido lhe custará -5 moedas.
+O Pouorochinho conta com 2 mini-jogos embutidos como o CLT Run. Ambos os jogos podem ser encontrados ao clicar na moeda brilhante no canto superior esquerdo da tela, um menu com os dois jogos aparecerá para que o usuário decida qual deseja jogar. <br>
 
 
 **__ATENÇÃO:__** <br>
@@ -46,8 +41,6 @@ Todos os assets utilizados, como imagens e áudios estão no diretório 'source'
 Sinta-se livre para contribuir ou corrigir este projeto.
 
 # Sobre
-
-Doe para que eu faça outros projetos semelhantes: https://livepix.gg/kenew
 
 Este projeto foi criado puramente para fins de entretenimento, qualquer semelhança com a realidade é uma mera coincidência.
 
